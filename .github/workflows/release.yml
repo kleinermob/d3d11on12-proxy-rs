@@ -35,10 +35,16 @@ jobs:
           mkdir x32
           copy target\x86_64-pc-windows-msvc\release\d3d11.dll x64\d3d11.dll
           copy target\i686-pc-windows-msvc\release\d3d11.dll x32\d3d11.dll
+          Compress-Archive -Path x64, x32 -DestinationPath d3d11on12-proxy.zip
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            x64/d3d11.dll
-            x32/d3d11.dll
+          files: d3d11on12-proxy-rs.zip
+```
+
+This creates a single `d3d11on12-proxy-rs.zip` containing both folders:
+```
+d3d11on12-proxy-rs.zip
+├── x64/d3d11.dll
+└── x32/d3d11.dll
