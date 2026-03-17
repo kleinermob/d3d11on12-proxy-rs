@@ -30,21 +30,15 @@ jobs:
         run: cargo build --target i686-pc-windows-msvc --release
 
       - name: Prepare release folders
+        shell: pwsh
         run: |
           mkdir x64
           mkdir x32
-          copy target\x86_64-pc-windows-msvc\release\d3d11.dll x64\d3d11.dll
-          copy target\i686-pc-windows-msvc\release\d3d11.dll x32\d3d11.dll
-          Compress-Archive -Path x64, x32 -DestinationPath d3d11on12-proxy.zip
+          Copy-Item target\x86_64-pc-windows-msvc\release\d3d11.dll x64\d3d11.dll
+          Copy-Item target\i686-pc-windows-msvc\release\d3d11.dll x32\d3d11.dll
+          Compress-Archive -Path x64, x32 -DestinationPath d3d11on12-proxy-rs.zip
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           files: d3d11on12-proxy-rs.zip
-```
-
-This creates a single `d3d11on12-proxy-rs.zip` containing both folders:
-```
-d3d11on12-proxy-rs.zip
-├── x64/d3d11.dll
-└── x32/d3d11.dll
