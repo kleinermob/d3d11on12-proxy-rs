@@ -8,17 +8,6 @@ This DLL intercepts `D3D11CreateDevice` and `D3D11CreateDeviceAndSwapChain` and 
 
 All other `d3d11.dll` exports are forwarded transparently to the real system DLL.
 
-## Fixes vs the original C++ implementation 
-
-1. `d3d12device` leaked when `CreateCommandQueue` fails — fixed via RAII
-2. `d3d12device` leaked when `D3D11On12CreateDevice` not found — fixed via RAII
-3. `d3d12queue` never released after `D3D11On12CreateDevice` call — fixed via RAII
-4. `d3d11Device` + `d3d11Context` leaked on early returns in `D3D11CreateDeviceAndSwapChain` — fixed via RAII `ComPtr` wrappers
-5. `getPfnD3D11On12CreateDevice` race condition — fixed via `OnceLock`
-6. `D3D12_COMMAND_QUEUE_DESC` not zero-initialized — fixed
-7. `DriverType = WARP` silently ignored — now handled
-8. `D3D12CreateDevice` / `CreateCommandQueue` called with wrong number of args for `windows` crate 0.58 API — fixed by loading raw fn pointers
-
 ## Requirements
 
 - Windows 10/11 (D3D11on12 is built-in)
